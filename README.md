@@ -119,5 +119,30 @@ helm install metallb metallb/metallb -n metallb-system --create-namespace
 Берём yaml в котором прописан набор доступных для MetalLb ip-адресов
 ```
 cd ~ 
-curl -L -o metalLB-pool.yaml ""
+curl -L -o metalLB-pool.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/MetalLB/metallb-pool.yaml"
 ``` 
+
+Подправим ip адреса если нам нужно
+```
+nano metalLB-pool.yaml
+```
+
+Запускаем yaml файл
+```
+kuberctl apply -f metalLB-pool.yaml
+```
+
+---
+
+## Docker-registry
+
+Создаём пространство имён
+```
+Kubectl create namespace docker-registry
+```
+
+Берём yaml 
+```
+cd ~ 
+curl -L -o docker-registry ""
+```
