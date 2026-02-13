@@ -48,7 +48,7 @@ Description=k3s
 After=network.target
 [Service]
 Type=notify
-ExecStart=/usr/local/bin/k3s server
+ExecStart=/usr/local/bin/k3s server --disable servicelb # для дальнейшей установки MetalLB
 TimeoutStartSec=0
 Restart=always
 RestartSec=10
@@ -91,3 +91,33 @@ sudo k3s agent --server https://<ip_or_hostname_of_existing_node>:6443 --token <
 
 ---
 
+## MetalLB
+
+Скачиваем MetalLB
+
+Скачиваем Helm если нет 
+```
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+создаём симлинк kubectl - k3s (shell запускает /usr/local/bin/kubectl, а это на самом деле ссылка на /usr/local/bin/k3s)
+```
+sudo rm /usr/local/bin/kubectl
+sudo ln -s /usr/local/bin/k3s /usr/local/bin/kubectl
+```
+
+для helm дополнительно прописываем
+```
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+```
+
+Устанавливаем Helm
+```
+helm install metallb metallb/metallb -n metallb-system --create-namespace
+```
+
+Берём yaml в котором прописан набор доступных для MetalLb ip-адресов
+```
+cd ~ 
+curl -L -o metalLB-pool.yaml ""
+``` 
