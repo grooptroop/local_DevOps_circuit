@@ -14,6 +14,10 @@
 
 ---
 
+
+
+[Инструкция по установке](Install.md)
+
 ## k3s кластер
 
 Чтобы k3s функционировала нам необходимо включить на сервере cgroup контроллеры 
@@ -145,4 +149,29 @@ Kubectl create namespace docker-registry
 ```
 cd ~ 
 curl -L -o docker-registry.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Docker-registry/docker-registry.yaml"
+```
+
+
+чтобы любой узел мог ходить к registry по IP master’а.
+```
+sudo mkdir -p /etc/rancher/k3s
+curl -L -o registries.yaml ""
+sudo mv registries.yaml /etc/rancher/k3s/
+```
+
+Пкркзапускаем k3s
+```
+sudo systemctl restart k3s 
+```
+
+Повторяем тоже самое на агенте
+```
+sudo mkdir -p /etc/rancher/k3s
+curl -L -o registries.yaml ""
+sudo mv registries.yaml /etc/rancher/k3s/
+```
+
+Перезапуск Агента
+```
+sudo systemctl restart k3s-agent || sudo systemctl restart k3s
 ```
