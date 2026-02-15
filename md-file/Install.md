@@ -168,3 +168,4 @@ sudo mv registries.yaml /etc/rancher/k3s/
 ```
 sudo systemctl restart k3s-agent || sudo systemctl restart k3s
 ```
+
