@@ -169,8 +169,47 @@ sudo mv registries.yaml /etc/rancher/k3s/
 sudo systemctl restart k3s-agent || sudo systemctl restart k3s
 ```
 
+Переходим на агента и прописываем адрес insecure-registry
+```
+sudo nano /etc/docker/daemon.json
+```
+
+```
+{
+  "insecure-registries": ["192.168.1.70:30500"]
+}
+```
 
 Ставим докер если его нет и создаём образ который пушим в наш registry
 ```
-
+docker pull nginx:alpine
+docker tag nginx:alpine 192.168.1.70:30500/our-task/nginx:v1
+docker push 192.168.1.70:30500/our-task/nginx:v1
 ```
+
+если у нас не ставятся образы:
+
+Создайём storage
+```
+sudo mkdir -p /var/lib/rancher/k3s/storage
+sudo chown -R 1001:65533 /var/lib/rancher/k3s/storage/
+sudo chmod 755 /var/lib/rancher/k3s/storage/
+```
+
+перезапустим поды
+```
+kubectl delete pod docker-registry-755c67db65-89rc8 -n docker-registry
+```
+
+ждём запуска
+```
+kubectl get pod -n docker-registry
+```
+
+
+
+
+
+
+
+

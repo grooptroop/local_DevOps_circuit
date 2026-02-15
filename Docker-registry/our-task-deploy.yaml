@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: our-task-nginx
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: our-task-nginx
+  template:
+    metadata:
+      labels:
+        app: our-task-nginx
+    spec:
+      containers:
+      - name: our-task-nginx
+        image: 192.168.1.70:30500/our-task/nginx:v1
+        ports:
+        - containerPort: 80
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: our-task-nginx-svc
+  namespace: default
+spec:
+  selector:
+      app: our-task-nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  type: ClusterIP
