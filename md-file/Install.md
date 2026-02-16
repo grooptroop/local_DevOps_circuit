@@ -7,9 +7,9 @@
 
 3. [Docker-registry](#docker-registry)
 
-4.[Gitea](#gitea)
+4. [Gitea](#gitea)
 
-
+5. [Drone-CI](#drone-ci)
 
 ---
 
@@ -131,6 +131,13 @@ nano metalLB-pool.yaml
 kuberctl apply -f metalLB-pool.yaml
 ```
 
+
+!Если у нас падаёт всё в metalLB удаляем поды, они встанут сразу норм
+```
+kubectl delete pod -n metallb-system -l app.kubernetes.io/component=controller
+kubectl delete pod -n metallb-system -l app.kubernetes.io/component=speaker
+```
+
 ---
 
 ## Docker-registry
@@ -242,3 +249,49 @@ kubectl create namespace gitea
 cd ~ 
 curl -L -o gitea.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Gitea/gitea.yaml"
 ```
+
+Открываем её в браузере(как указали в gitea.yaml) 
+```
+http://192.168.1.201:3000/
+```
+
+---
+
+## Drone-CI
+
+Заходим в gitea в раздел приложения
+```
+http://192.168.1.201:3000/user/settings/applications
+```
+
+Здесь скролим вниз и выбираем создать OAuth2 приложения
+
+Вставляем данные:
+
+Имя `Drone-CI`
+
+Redirect URL `http://192.168.1.201:8080/login`
+
+Сохраняем и выписываем:
+
+- Client ID
+- Client Secret
+
+На любой нашей ноде создаём секрет для Drone (тоже сохраняем себе)
+```
+openssl rand -hex 16
+```
+
+Создаём namespaces
+```
+kubectl create namespace drone
+```
+
+Скачиваем yaml для Drone-CI и подставляем затем наши данные(я подписал куда что вставлять)
+```
+cd ~ 
+mkdir Drone-CI  && cd Drone-CI
+curl -L -o drone-server.yaml " "
+```
+
+

@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: drone-pvc
+  namespace: drone
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: local-path
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drone-server
+  namespace: drone 
+spec:
+  replicas: 1
+  selector:
+    mathLabels: 
+      app: drone-server
+  template:
+    metadata:
+      mathLabels:
+        app: drone-server 
+    spec:
+      containers:
+      - name: drone-server
+        image: drone/drone:2
+        ports:
+        - containerPort: 80
+          name: http 
+        env: 
+        - name: DRONE_SERVER_HOST
+          value: "192.168.1.202:80"  
+        - name: DRONE_SERVER_PROMO
+          value: "http"
+        - name: DRONE_GITEA_SERVER
+          value: "http://192.168.1.201:3000"  # где распологается ваша gitea
+        - name: DRONE_GITEA_CLIENT_ID
+          value: "da9207b0-aecf-4470-a43a-a2b80dc50393" # ваш client id 
+        - name: DRONE_GITEA_CLIENT_SECRET
+          value: "gto_czectmuoxigdctflhcs4cyx6fc4zvwi5umgpqmqt2bagsnott2sq" # ваш client key
+        - name: DRONE_RPC_SECRET
+          value: "ae5a50dae0d48a47106c9a1c6dcf1bf4" # ваш секрет
+        - name: DRONE_USER_CREATE
+          value: "username:FixIT,admin:true" # username: ваш логин в gitea
+
+        # Внутренние настройки
+        - name: DRONE_DATABASE_DATASOURCE
+          value: "/data/database.sqlite"
+        - name: DRONE_DATABASE_DRIVER
+          value: "sqlite3"
+        - name: DRONE_LOGS_DEBUG
+          value: "true"
+        - name: DRONE_LOGS_TRACE
+          value: "true"
+
+        volumeMounts:
+        - name: drone-data
+          mountPath: /data
+      volumes:
+      - name: drone-data
+        persistentVolumeClaim:
+          claimName: drone-pvc
+
+
+---
+
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: drone-svc
+  namespaces: drone
+spec: 
+  type: LoadBalancer
+  selector: 
+    app: drone-server
+  loadBalancerIP: 192.168.1.202    # свободный IP из пула
+  ports:
+  - name: http 
+    port: 80
+    targetPort: 80
+
