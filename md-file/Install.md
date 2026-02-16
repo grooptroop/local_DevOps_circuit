@@ -308,5 +308,6 @@ http://192.168.1.202
 Начинаем настраивать drone-runner
 ```
 cd Drone-CI
-curl -L -o drone-runner.yaml " "
+curl -L -o drone-runner.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Drone-ci/drone-runner.yaml"
 ```
+
