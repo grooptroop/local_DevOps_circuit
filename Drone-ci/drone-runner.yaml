@@ -1,0 +1,52 @@
+apiVersion: v1 
+kind: ServiceAccount
+metadata: 
+  name: drone-runner
+  namespace: drone
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: drone-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io/v1
+  kind: ClusterRole 
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: drone-runner
+  namespace: drone
+
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: drone-runner
+  namespace: drone
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: drone-runner
+  template:
+    metadata:
+      labels:
+        app: drone-runner
+    spec:
+      serviceAccountName: drone-runner
+      containers:
+      - name: runner 
+        image: drone/drone-runner-kube:1
+        env: 
+        - name: DRONE_RPC_HOST
+          value: "192.168.1.202"            # тот же IP/хост, что у Drone-сервера
+        - name: DRONE_RPC_PROTO
+          value: "http"
+        - name: DRONE_RPC_SECRET
+          value: "ae5a50dae0d48a47106c9a1c6dcf1bf4"       # тот же секрет, что в drone-server
+        - name: DRONE_RUNNER_CAPACITY
+          value: "2"
+        - name: DRONE_RUNNER_NAME
+          value: "k3s-runner"

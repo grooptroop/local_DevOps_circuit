@@ -270,7 +270,7 @@ http://192.168.1.201:3000/user/settings/applications
 
 Имя `Drone-CI`
 
-Redirect URL `http://192.168.1.201:8080/login`
+Redirect URL `http://192.168.1.202:80/login`
 
 Сохраняем и выписываем:
 
@@ -294,4 +294,19 @@ mkdir Drone-CI  && cd Drone-CI
 curl -L -o drone-server.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Drone-ci/drone-server.yaml"
 ```
 
+Применяем и смотрим всё ли поднялось
+```
+kubectl apply -f drone-server.yaml
+kubectl get pods,svc -n drone
+```
 
+Заходим на наш адрес Drone-CI разрешаем доступ и регистрируемся 
+```
+http://192.168.1.202
+```
+
+Начинаем настраивать drone-runner
+```
+cd Drone-CI
+curl -L -o drone-runner.yaml " "
+```
