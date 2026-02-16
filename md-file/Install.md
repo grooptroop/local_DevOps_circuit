@@ -240,5 +240,5 @@ kubectl create namespace gitea
 Устанавливаем Gitea через yaml 
 ```
 cd ~ 
-curl -L -o gitea.yaml ""
+curl -L -o gitea.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Gitea/gitea.yaml"
 ```
