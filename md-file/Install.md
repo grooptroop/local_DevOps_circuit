@@ -7,6 +7,8 @@
 
 3. [Docker-registry](#docker-registry)
 
+4.[Gitea](#gitea)
+
 
 
 ---
@@ -187,7 +189,13 @@ docker tag nginx:alpine 192.168.1.70:30500/our-task/nginx:v1
 docker push 192.168.1.70:30500/our-task/nginx:v1
 ```
 
-если у нас не ставятся образы:
+Проверяем появился ли образ:
+```
+curl http://192.168.1.70:30500/v2/_catalog
+```
+Если всё работает, ура мы сделали! 
+
+Если у нас не ставятся образы:
 
 Создайём storage
 ```
@@ -206,10 +214,31 @@ kubectl delete pod docker-registry-755c67db65-89rc8 -n docker-registry
 kubectl get pod -n docker-registry
 ```
 
+Собираем образ из каталога
+```
+cd ~ 
+curl -L -o our-task-deploy.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Docker-registry/our-task-deploy.yaml"
+``` 
+
+Если запустился, значит образ встал из каталога
+```
+kubectl apply -f our-task-deploy.yaml
+
+kubectl get pods,deploy -n default
+```
+
+---
+
+## Gitea
 
 
+Создадим namespace для Gitea
+```
+kubectl create namespace gitea
+```
 
-
-
-
-
+Устанавливаем Gitea через yaml 
+```
+cd ~ 
+curl -L -o gitea.yaml ""
+```
