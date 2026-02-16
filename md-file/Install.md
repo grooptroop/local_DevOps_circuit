@@ -291,7 +291,7 @@ kubectl create namespace drone
 ```
 cd ~ 
 mkdir Drone-CI  && cd Drone-CI
-curl -L -o drone-server.yaml " "
+curl -L -o drone-server.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Drone-ci/drone-server.yaml"
 ```
 
 
