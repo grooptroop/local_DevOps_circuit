@@ -311,3 +311,14 @@ cd Drone-CI
 curl -L -o drone-runner.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Drone-ci/drone-runner.yaml"
 ```
 
+На агенте pull образа runnera (не получается поставить напрямую)
+```
+docker pull drone/drone-runner-kube:latest
+docker tag drone/drone-runner-kube:latest 192.168.1.70:30500/drone/drone-runner-kube:latest
+docker push 192.168.1.70:30500/drone/drone-runner-kube:latest
+```
+
+Запускаем runner
+```
+kubectl apply -f drone-runner.yaml
+```

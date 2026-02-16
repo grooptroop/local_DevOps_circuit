@@ -38,7 +38,7 @@ spec:
       serviceAccountName: drone-runner
       containers:
       - name: runner 
-        image: drone/drone-runner-kube:v1.0.0-rc.5
+        image: 192.168.1.70:30500/drone/drone-runner-kube:latest
         env: 
         - name: DRONE_RPC_HOST
           value: "192.168.1.202"            # тот же IP/хост, что у Drone-сервера
