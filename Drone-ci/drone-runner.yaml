@@ -49,4 +49,6 @@ spec:
         - name: DRONE_RUNNER_CAPACITY
           value: "2"
         - name: DRONE_RUNNER_NAME
-          value: "k3s-runner"
+          value: "drone-runner"
+        - name: DRONE_IMAGE_CLONE
+          value: 192.168.1.70:30500/drone/git:1.2.1-linux-arm64

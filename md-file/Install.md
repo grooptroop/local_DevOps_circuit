@@ -11,6 +11,8 @@
 
 5. [Drone-CI](#drone-ci)
 
+6. [Устройство репозитория](#устройство-репозитория) 
+
 ---
 
 ## k3s кластер
@@ -270,7 +272,7 @@ http://192.168.1.201:3000/user/settings/applications
 
 Имя `Drone-CI`
 
-Redirect URL `http://192.168.1.202:80/login`
+Redirect URL `http://192.168.1.202/login`
 
 Сохраняем и выписываем:
 
@@ -305,11 +307,21 @@ kubectl get pods,svc -n drone
 http://192.168.1.202
 ```
 
+```
+# 1. Clone-образ
+docker pull drone/git:1.2.1-linux-arm64
+docker tag  drone/git:1.2.1-linux-arm64  192.168.1.70:30500/drone/git:1.2.1-linux-arm64
+docker push 192.168.1.70:30500/drone/git:1.2.1-linux-arm64
+```
+
+
 Начинаем настраивать drone-runner
 ```
 cd Drone-CI
 curl -L -o drone-runner.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/Drone-ci/drone-runner.yaml"
 ```
+
+
 
 На агенте pull образа runnera (не получается поставить напрямую)
 ```
@@ -321,4 +333,42 @@ docker push 192.168.1.70:30500/drone/drone-runner-kube:latest
 Запускаем runner
 ```
 kubectl apply -f drone-runner.yaml
+kubectl get pods -n drone
 ```
+
+Создаём репозиторий в gitea (я назвад test-ci), затем заходим в drone и нажимаем кнопку sync, затем activate 
+
+
+Подключаемся к нашему репозиторию и создаём приложение
+
+---
+
+## Устройство репозитория
+
+Я буду создавать nginx приложение, вы можете создавать что угодно, главное - `.drone.yaml`
+
+Копирую repo по адрессу(ваш repo может быть другим)
+```
+git clone http://192.168.1.201:3000/FixIT/test-ci.git
+```
+
+Создаю nginx приложение + dockerfile + .drone(в моём репо папка называется demo-app)
+
+
+
+
+
+
+---
+Устанавливаем образы
+
+# 2. Kaniko-плагин
+docker pull plugins/kaniko:1.11.4-linux-arm64
+docker tag  plugins/kaniko:1.11.4-linux-arm64  192.168.1.70:30500/plugins/kaniko:1.11.4-linux-arm64
+docker push 192.168.1.70:30500/plugins/kaniko:1.11.4-linux-arm64
+
+# 3. kubectl для deploy
+docker pull bitnami/kubectl:latest
+docker tag  bitnami/kubectl:latest  192.168.1.70:30500/bitnami/kubectl:latest
+docker push 192.168.1.70:30500/bitnami/kubectl:latest
+

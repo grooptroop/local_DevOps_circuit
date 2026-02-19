@@ -36,8 +36,8 @@ spec:
           name: http 
         env: 
         - name: DRONE_SERVER_HOST
-          value: "192.168.1.202:80"  
-        - name: DRONE_SERVER_PROMO
+          value: "192.168.1.202"  
+        - name: DRONE_SERVER_PROTO
           value: "http"
         - name: DRONE_GITEA_SERVER
           value: "http://192.168.1.201:3000"  # где распологается ваша gitea
