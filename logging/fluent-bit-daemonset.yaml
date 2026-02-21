@@ -74,9 +74,12 @@ spec:
         - name: varlog
           hostPath:
             path: /var/log
-        - name: varlibcontainers
-          hostPath:
-            path: /var/lib/docker/containers
         - name: config
           configMap:
             name: fluent-bit-config
+
+volumeMounts:
+  - name: varlog
+    mountPath: /var/log
+  - name: config
+    mountPath: /fluent-bit/etc/

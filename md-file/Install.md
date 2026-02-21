@@ -419,3 +419,14 @@ mkdir logging && cd logging
 curl -L -o elastic.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/logging/elastic.yaml"
 kubectl apply -f elastic.yaml
 ```
+
+
+Ставим Fluent Bit для сбора всех логов у подов
+```
+cd logging
+curl -L -o fluent-bit-config.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/logging/fluent-bit-config.yaml"
+curl -L -o fluent-bit-daemonset.yaml "https://raw.githubusercontent.com/grooptroop/homelab-devops-platform/refs/heads/master/logging/fluent-bit-daemonset.yaml"
+
+kubectl apply -f fluent-bit-config.yaml
+kubectl apply -f fluent-bit-daemonset.yaml
+```
