@@ -10,10 +10,13 @@
 - Drone CI
 - Prometheus
 - Grafana
-- Elasticsearch
 
 ---
 
+Общая структура:
+![alt text](image.png)
+
+---
 
 
 [Инструкция по установке](/md-file/Install.md)
