@@ -84,7 +84,7 @@ sudo cat /var/lib/rancher/k3s/server/node-token
 На 2 сервере ставим 
 ```
 curl -L https://github.com/k3s-io/k3s/releases/latest/download/k3s-arm64 -o k3s
-chmod +x k3s
+chmod +x k3sHel
 sudo mv k3s /usr/local/bin/
 ```
 
@@ -114,7 +114,7 @@ sudo ln -s /usr/local/bin/k3s /usr/local/bin/kubectl
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 ```
 
-Устанавливаем Helm
+Устанавливаем MetalLB
 ```
 helm install metallb metallb/metallb -n metallb-system --create-namespace
 ```
@@ -416,4 +416,5 @@ kubectl get secret kps-grafana -n monitoring -o jsonpath='{.data.admin-password}
 ```
 12114
 ```
+
 
